@@ -1,0 +1,30 @@
+/* assets/styles/main.css */
+
+.custom-header {
+    background: var(--header-bg);
+    padding: var(--spacing-xl);
+    border-radius: var(--header-radius);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    border: 1px solid var(--border);
+}
+
+.header-title {
+    font-family: var(--font-heading);
+    font-size: var(--header-title-size);
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+    color: var(--header-text);
+}
+
+.header-title svg {
+    transform: translateY(-3px);
+}
+
+.header-subtitle {
+    font-family: var(--font-heading);
+    font-size: var(--header-subtitle-size);
+    font-weight: 400;
+    margin-top: 0;
+    color: var(--header-text);
+}

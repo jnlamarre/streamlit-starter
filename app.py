@@ -2,79 +2,155 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
+from datetime import datetime, timedelta
 
-# Sidebar
-st.sidebar.header("🧭 Navigation")
+# Component imports
+from utils.icon_loader import load_icon_simple, load_icon_advanced
+from utils.css_loader import load_css
+from components.header import render_header
+from components.footer import render_footer
 
-st.sidebar.write("Période")
-st.sidebar.selectbox("", ["30j"], label_visibility="collapsed")
 
-st.sidebar.write("🔧 Mode debug")
-
-# Titre principal
-st.title("Analytics Dashboard")
-st.write("Dashboard de performance commerciale")
-
-# KPIs Principaux
-st.subheader("KPIs Principaux")
-
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    st.metric("Chiffre d'Affaires", "$2,88M", "12%")
-
-with col2:
-    st.metric("Commandes Total", "8,834", "5%")
-
-with col3:
-    st.metric("Clients Moyens/Jour", "199", "-2%")
-
-with col4:
-    st.metric("Panier Moyen", "€327", "8%")
-
-# Analyses Temporelles
-st.subheader("Analyses Temporelles")
-st.write("Evolution du Chiffre d'Affaires")
-
-# Données factices pour le graphique
-dates = pd.date_range('2023-01-01', '2023-12-31', freq='D')
-ca_data = np.random.randn(len(dates)).cumsum() + 100
-
-df_ca = pd.DataFrame({
-    'Date': dates,
-    'CA': ca_data
-})
-
-# Graphique en ligne
-fig_line = px.line(df_ca, x='Date', y='CA', 
-                   color_discrete_sequence=['#87CEEB'])
-fig_line.update_layout(
-    showlegend=False,
-    xaxis_title="Date",
-    yaxis_title="CA"
+st.set_page_config(
+    page_title="Analytics Hub Enterprise | HQ Geosciences",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+    menu_items={
+        'Get Help': 'mailto:support@hqgeosciences.com',
+        'Report a bug': 'mailto:analytics-team@hqgeosciences.com',
+        'About': "**Analytics Hub Enterprise** | HQ Geosciences v2.1.0"
+    }
 )
-st.plotly_chart(fig_line, use_container_width=True)
 
-# Performance par Région
-st.subheader("Performance par Région")
-st.write("Ventes par Région")
+def generate_sample_data():
+    """Generate sample data for analytics dashboard"""
+    
+    # Time series data (6 months)
+    dates = pd.date_range(
+        start=datetime.now() - timedelta(days=180),
+        end=datetime.now(),
+        freq='D'
+    )
+    
+    # Mock data for revenue
+    np.random.seed(42)
+    ca_data = np.random.randn(len(dates)).cumsum() + 100
+    
+    # Mock data for regions
+    regions = ['North', 'South', 'East', 'West']
+    sales = [80, 95, 88, 105]
+    
+    df_ca = pd.DataFrame({
+        'Date': dates,
+        'CA': ca_data
+    })
+    
+    df_regions = pd.DataFrame({
+        'Region': regions,
+        'Sales': sales
+    })
+    
+    return df_ca, df_regions
 
-# Données factices pour les barres
-regions = ['Nord', 'Sud', 'Est', 'Ouest']
-ventes = [80, 95, 88, 105]
+def main():
+    # ===== STYLING =====
+    load_css([
+        "static/styles/themes.css",
+        "static/styles/components/shared.css",
+        "static/styles/components/header.css", 
+        "static/styles/components/footer.css",
+        "static/styles/main.css"
+    ])
+    
+    # ===== HEADER =====
+    render_header("Production Analytics",
+                  logo_path="app/static/images/logo/logo.png")
+    
+    # ===== DATA PREPARATION =====
+    df_ca, df_regions = generate_sample_data()
+    
+    # ===== MAIN CONTENT =====
+    # Main KPIs
+    st.html('<div class="card section">')
+    st.subheader("Production Indicators")
 
-df_regions = pd.DataFrame({
-    'Région': regions,
-    'Ventes': ventes
-})
+    st.html("""
+    <div class="metrics-grid">
+        <div class="metric-card positive">
+            <div class="metric-icon">💰</div>
+            <div class="metric-label">Revenue (YTD)</div>
+            <div class="metric-value">12,8M€</div>
+            <div class="metric-change positive">
+                <span>↗</span> +18%
+            </div>
+        </div>
+        
+        <div class="metric-card positive">
+            <div class="metric-icon">📊</div>
+            <div class="metric-label">Market Share</div>
+            <div class="metric-value">23,4%</div>
+            <div class="metric-change positive">
+                <span>↗</span> +2,1%
+            </div>
+        </div>
+        
+        <div class="metric-card negative highlight">
+            <div class="metric-icon">😊</div>
+            <div class="metric-label">Customer Satisfaction</div>
+            <div class="metric-value">92,1%</div>
+            <div class="metric-change negative">
+                <span>↘</span> -1,3%
+            </div>
+        </div>
+        
+        <div class="metric-card positive">
+            <div class="metric-icon">⚡</div>
+            <div class="metric-label">Operational Efficiency</div>
+            <div class="metric-value">87%</div>
+            <div class="metric-change positive">
+                <span>↗</span> +5%
+            </div>
+        </div>
+    </div>
+    """)
 
-# Graphique en barres
-fig_bar = px.bar(df_regions, x='Région', y='Ventes',
-                 color_discrete_sequence=['#87CEEB'])
-fig_bar.update_layout(
-    showlegend=False,
-    xaxis_title="",
-    yaxis_title="Ventes (K€)"
-)
-st.plotly_chart(fig_bar, use_container_width=True)
+    st.html('</div>')
+
+    # Time Series Analysis
+    st.html('<div class="card section">')
+    st.markdown(f'## {load_icon_advanced("chart-line", 24, "#1e40af")} Time Series Analysis', unsafe_allow_html=True)
+    st.write("Revenue Evolution")
+    st.html('<span class="badge badge-info">30-day trend</span>')
+
+    fig_line = px.line(df_ca, x='Date', y='CA', 
+                       color_discrete_sequence=['#1e40af'])
+    fig_line.update_layout(
+        showlegend=False,
+        xaxis_title="Date",
+        yaxis_title="Revenue"
+    )
+    st.plotly_chart(fig_line, use_container_width=True)
+    st.html('</div>')
+
+    # Regional Performance
+    st.html('<div class="card section">')
+    st.markdown(f'## {load_icon_advanced("chart-bar", 24, "#1e40af")} Regional Performance', unsafe_allow_html=True)
+    st.write("Sales by Region")
+    st.html('<span class="badge badge-success">Targets achieved</span>')
+
+    fig_bar = px.bar(df_regions, x='Region', y='Sales',
+                     color_discrete_sequence=['#1e40af'])
+    fig_bar.update_layout(
+        showlegend=False,
+        xaxis_title="",
+        yaxis_title="Sales (K$)"
+    )
+    st.plotly_chart(fig_bar, use_container_width=True)
+    st.html('</div>')
+
+    # ===== FOOTER =====
+    render_footer()
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,38 @@
+/* assets/styles/themes.css */
+:root {
+    /* Typography System */
+    --font-body: "Inter", system-ui, sans-serif;
+    --font-heading: "Geist", system-ui, sans-serif;
+    
+    /* Variables synced with .streamlit/config.toml */
+    --primary: #1e40af;
+    --bg-main: #ffffff;
+    --bg-secondary: #fafafa;
+    --text: #1f2937;
+    --link: #1e40af;
+    --border: #e5e7eb;
+    
+    /* CSS-only variables for custom components */
+    --success: #059669;
+    --warning: #d97706;
+    --error: #dc2626;
+    --info: #0891b2;
+    
+    /* Header styling */
+    --header-bg: linear-gradient(135deg, #1e40af, #3b82f6);
+    --header-text: #ffffff;
+    --header-radius: 12px;
+    --header-title-size: 2.5rem;
+    --header-subtitle-size: 1.2rem;
+    
+    /* Spacing and design system */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    --radius: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-lg: 0 4px 6px rgba(0,0,0,0.1);
+}

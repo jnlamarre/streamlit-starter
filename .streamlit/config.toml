@@ -1,0 +1,36 @@
+[server]
+enableStaticServing = true      # Allow serving static files (CSS, fonts, icons)
+maxUploadSize = 200             # Max file upload size in MB
+enableXsrfProtection = true     # Cross-site request forgery protection
+runOnSave = true                # Auto-reload app when files change
+
+[browser]
+gatherUsageStats = false        # Disable Streamlit usage analytics
+showErrorDetails = true         # Show detailed error messages during development
+
+# Custom Fonts
+[[theme.fontFaces]]
+family = "Inter"
+url = "static/fonts/Inter-VariableFont_opsz,wght.ttf"
+
+[[theme.fontFaces]]
+family = "Geist"
+url = "static/fonts/Geist-VariableFont_wght.ttf"
+
+[theme]
+# Brand Colors
+primaryColor = "#1e40af"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#fafafa"
+textColor = "#1f2937"
+linkColor = "#1e40af"
+
+# UI Elements
+borderColor = "#e5e7eb"
+showWidgetBorder = true
+baseRadius = "0.5rem"
+buttonRadius = "0.375rem"
+
+# Typography
+font = "Inter"
+
